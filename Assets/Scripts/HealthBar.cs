@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+
 public class HealthBar : MonoBehaviour
 {
-
-
     public Slider slider;
     public Gradient gradient;
     public Image fill;
@@ -24,4 +23,18 @@ public class HealthBar : MonoBehaviour
 
         fill.color = gradient.Evaluate(1f);
     }
+
+    public void TakeDamage(int damage)
+    {
+        slider.value = slider.value - damage;
+
+        fill.color = gradient.Evaluate(slider.normalizedValue);
+        if(slider.value <= 0)
+        {
+            FindObjectOfType<GameManager>().GameOver();
+        }
+    }
+
+
+
 }

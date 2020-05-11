@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class EnemyAI : MonoBehaviour
 {
     private Rigidbody rb;
     public NavMeshAgent agent;
     public Transform target;
-    
+    public Slider slider;
+
     void Start()
     {
         //target = PlayerManager.instance.player.transform; 
@@ -39,9 +41,10 @@ public class EnemyAI : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "Hero")
+       if (collision.collider.tag == "Hero")
         {
-
+            FindObjectOfType<HealthBar>().TakeDamage(20);
+            Debug.Log("works");
         }
     }
 

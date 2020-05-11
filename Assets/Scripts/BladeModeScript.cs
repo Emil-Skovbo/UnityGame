@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 using Cinemachine;
 using EzySlice;
 using UnityEngine.Rendering.PostProcessing;
+using System;
 
 public class BladeModeScript : MonoBehaviour
 {
@@ -26,6 +28,8 @@ public class BladeModeScript : MonoBehaviour
 
     public LayerMask layerMask;
     ParticleSystem[] particles;
+
+    public Text score;
 
     void Start()
     {
@@ -70,6 +74,7 @@ public class BladeModeScript : MonoBehaviour
                 cutPlane.GetChild(0).DOLocalMoveX(cutPlane.GetChild(0).localPosition.x * -1, .05f).SetEase(Ease.OutExpo);
                 ShakeCamera();
                 Slice();
+
             }
         }
 
@@ -93,6 +98,8 @@ public class BladeModeScript : MonoBehaviour
                 AddHullComponents(bottom);
                 AddHullComponents(top);
                 Destroy(hits[i].gameObject);
+                int temp = Int32.Parse(score.text) + 1;
+                score.text = temp.ToString();
             }
         }
     }

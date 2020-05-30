@@ -37,6 +37,17 @@ public class EnemyAI : MonoBehaviour
         {
             agent.baseOffset = Mathf.Sin(Mathf.PI * (target.position.x + Time.deltaTime));
         }
+        if (gameObject.tag == "Enemy3")
+        {
+            Vector3 vortex = target.position;
+            float time = Time.deltaTime *5;
+            vortex.x = target.position.x + Mathf.Cos(time);
+            vortex.z = target.position.z + Mathf.Tan(time);
+            //vortex.z = 0;
+            //transform.position = vortex;
+            agent.SetDestination(vortex);
+        }
+
     }
 
     void OnCollisionEnter(Collision collision)
@@ -44,7 +55,6 @@ public class EnemyAI : MonoBehaviour
        if (collision.collider.tag == "Hero")
         {
             FindObjectOfType<HealthBar>().TakeDamage(20);
-            Debug.Log("works");
         }
     }
 

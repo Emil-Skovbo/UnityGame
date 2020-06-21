@@ -11,7 +11,6 @@ using System;
 public class BladeModeScript : MonoBehaviour
 {
     public bool bladeMode;
-
     private Animator anim;
     private MovementInput movement;
     private Vector3 normalOffset;
@@ -30,6 +29,8 @@ public class BladeModeScript : MonoBehaviour
     ParticleSystem[] particles;
 
     public Text score;
+
+    public static bool active = true; 
 
     void Start()
     {
@@ -50,39 +51,43 @@ public class BladeModeScript : MonoBehaviour
 
     void Update()
     {
-        anim.SetFloat("x", Mathf.Clamp(Camera.main.transform.GetChild(0).localPosition.x + 0.3f,-1,1));
-        anim.SetFloat("y", Mathf.Clamp(Camera.main.transform.GetChild(0).localPosition.y + .18f, -1,1));
-
-        if (Input.GetMouseButtonDown(1))
+        if (active == true)
         {
-            Zoom(true);
-        }
+            anim.SetFloat("x", Mathf.Clamp(Camera.main.transform.GetChild(0).localPosition.x + 0.3f, -1, 1));
+            anim.SetFloat("y", Mathf.Clamp(Camera.main.transform.GetChild(0).localPosition.y + .18f, -1, 1));
 
-        if (Input.GetMouseButtonUp(1))
-        {
-            Zoom(false);
-        }
-
-        if (bladeMode)
-        {
-            transform.rotation = Quaternion.Lerp(transform.rotation,Camera.main.transform.rotation,.2f);
-            RotatePlane();
-
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(1))
             {
-                cutPlane.GetChild(0).DOComplete();
-                cutPlane.GetChild(0).DOLocalMoveX(cutPlane.GetChild(0).localPosition.x * -1, .05f).SetEase(Ease.OutExpo);
-                ShakeCamera();
-                Slice();
-
+                Zoom(true);
             }
-        }
 
-        Debug();
+            if (Input.GetMouseButtonUp(1))
+            {
+                Zoom(false);
+            }
+
+            if (bladeMode)
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, Camera.main.transform.rotation, .2f);
+                RotatePlane();
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    cutPlane.GetChild(0).DOComplete();
+                    cutPlane.GetChild(0).DOLocalMoveX(cutPlane.GetChild(0).localPosition.x * -1, .05f).SetEase(Ease.OutExpo);
+                    ShakeCamera();
+                    Slice();
+
+                }
+            }
+
+            Debug();
+        }
     }
 
     public void Slice()
     {
+        
         Collider[] hits = Physics.OverlapBox(cutPlane.position, new Vector3(5, 0.1f, 5), cutPlane.rotation, layerMask);
 
         if (hits.Length <= 0)
@@ -102,6 +107,8 @@ public class BladeModeScript : MonoBehaviour
                 score.text = temp.ToString();
             }
         }
+        
+
     }
 
     public void AddHullComponents(GameObject go)
